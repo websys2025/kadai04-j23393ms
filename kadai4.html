@@ -37,17 +37,22 @@
 
                     // 配列の内容を項目毎に出力
                     // 課題4-1. ここにコードを書く
+                    for (let i = 0; i < items.length; i++) {
+                        console.log("商品番号: " + items[i].id + ", 商品名: " + items[i].name + ", 金額: " + items[i].price + ", 在庫数: " + items[i].stock);
+                    }
                     console.log(""); // 空行の出力
                 }
                 
                 // 商品購入の関数
-                buyItem() {          
+                buyItem() {           
                     if (this.stock >= 1) { 
                         console.log("商品番号: "+this.id+", 商品名: "+this.name+"を購入します。");
                         // 課題4-2. ここにコードを書く
-                        // 購入による商品の在庫削減処理
+                        this.stock--;
+                        console.log("残りは" + this.stock + "個です。");
                         
                         // 課題4-3. ここにコードを書く
+                        document.getElementById("stock" + this.id).innerHTML = this.stock;
                         // 在庫用のエレメントを抽出し、HTML内の個数を更新
                     } else console.log(this.name+"は商品の在庫がないため購入できません。");
                 }
@@ -63,23 +68,37 @@
 
             // 課題4-1. ここにコード書く
             // 商品オブジェクトの生成
+            for (let i = 0; i < items.length; i++) {
+                item_list[i] = new Item(items[i].name, items[i].price, items[i].stock);
+            }
 
             // 課題4-2. ここにコードを書く
             // 商品表の作成
+            for (let i = 0; i < item_list.length; i++) {
+                let row = "<tr>";
+                row += "<td>" + item_list[i].name + "</td>";
+                row += "<td>" + item_list[i].price + "</td>";
+                row += "<td id='stock" + item_list[i].id + "'>" + item_list[i].stock + "</td>";
+                row += "<td><button id='button" + item_list[i].id + "'>購入</button></td>";
+                row += "</tr>";
+                itemArea.innerHTML += row;
+            }
+            
 
             // クリックイベント時の購入処理の設定
             for (let i=0; i<item_list.length; i++) {
                 // 課題4-3. ここにコードを書く
                 // 課題4-1, 4-2のコードが完成したら、以下のコメントを外す
-                //document.getElementById("button"+item_list[i].id).onclick = () => {
-                //    item_list[i].buyItem();
-                //}
+                document.getElementById("button"+item_list[i].id).onclick = () => {
+                    item_list[i].buyItem();
+                }
             }
             Item.showItemList(item_list);
 
         </script>
     </body>
 </html>
+
 <!-- 
 期待される出力例
 -----------------
